@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Creates a Spring Boot Application to run the Pricing Service.
- * TODO: Convert the application from a REST API to a microservice.
  */
 @SpringBootApplication
 @EnableEurekaClient
