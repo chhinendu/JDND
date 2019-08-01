@@ -24,7 +24,7 @@ public class WebSocketChatApplication {
      */
     @GetMapping("/")
     public ModelAndView login() {
-        return new ModelAndView("/login");
+        return new ModelAndView("login");
     }
 
     /**
@@ -33,6 +33,6 @@ public class WebSocketChatApplication {
     @GetMapping("/index")
     public ModelAndView index(String username, Model model) throws UnknownHostException {
         model.addAttribute("username", username);
-        return new ModelAndView("/chat");
+        return new ModelAndView("chat");
     }
 }
