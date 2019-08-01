@@ -1,9 +1,13 @@
 package edu.udacity.java.nano.chat;
 
+import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,9 +26,20 @@ public class WebSocketChatServer {
      * All chat sessions.
      */
     private static Map<String, Session> onlineSessions = new ConcurrentHashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketChatServer.class);
 
     private static void sendMessageToAll(String msg) {
-        //TODO: add send message method.
+        onlineSessions.forEach((s, session) -> {
+            try {
+                if (session.isOpen()) {
+                    session.getBasicRemote().sendText(msg);
+                } else {
+                    onlineSessions.remove(s);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -32,7 +47,11 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session) {
-        //TODO: add on open connection.
+        onlineSessions.put(session.getId(), session);
+        Message message = new Message();
+        message.setType(Message.MessageType.ENTER);
+        message.setOnlineCount(onlineSessions.size());
+        sendMessageToAll(JSON.toJSONString(message));
     }
 
     /**
@@ -40,15 +59,23 @@ public class WebSocketChatServer {
      */
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
-        //TODO: add send message.
+        Message message = JSON.parseObject(jsonStr, Message.class);
+        message.setType(Message.MessageType.SPEAK);
+        message.setOnlineCount(onlineSessions.size());
+        sendMessageToAll(JSON.toJSONString(message));
     }
 
     /**
      * Close connection, 1) remove session, 2) update user.
      */
     @OnClose
-    public void onClose(Session session) {
-        //TODO: add close connection.
+    public void onClose(Session session) throws IOException {
+        session.close();
+        onlineSessions.remove(session.getId());
+        Message message = new Message();
+        message.setType(Message.MessageType.LEAVE);
+        message.setOnlineCount(onlineSessions.size());
+        sendMessageToAll(JSON.toJSONString(message));
     }
 
     /**
