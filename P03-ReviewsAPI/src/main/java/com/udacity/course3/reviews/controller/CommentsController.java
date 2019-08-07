@@ -6,8 +6,10 @@ import com.udacity.course3.reviews.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -34,11 +36,12 @@ public class CommentsController {
      * @param reviewId The id of the review.
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST)
-    public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @RequestBody Comment comment) {
+    @Transactional
+    public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @Valid @RequestBody Comment comment) {
         return reviewRepository.findById(reviewId)
                 .map(review -> {
                     comment.setReview(review);
-                    return new ResponseEntity<>(comment, HttpStatus.CREATED);
+                    return new ResponseEntity<>(commentRepository.save(comment), HttpStatus.CREATED);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Review not Found for: " + reviewId));
     }
