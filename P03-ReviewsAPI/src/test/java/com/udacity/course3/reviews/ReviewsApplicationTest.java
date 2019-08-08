@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class ReviewsApplicationTests {
+public class ReviewsApplicationTest {
 
     @Autowired
     private DataSource dataSource;

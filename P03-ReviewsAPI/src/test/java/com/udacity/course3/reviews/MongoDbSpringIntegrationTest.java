@@ -1,36 +1,26 @@
 package com.udacity.course3.reviews;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.udacity.course3.reviews.entity.Product;
-import com.udacity.course3.reviews.entity.Review;
 import com.udacity.course3.reviews.entity.ReviewDocument;
 import com.udacity.course3.reviews.repository.ReviewDocumentRepository;
 import org.junit.Before;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBObject;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ContextConfiguration(classes = ReviewsApplication.class)
 @DataMongoTest
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
 public class MongoDbSpringIntegrationTest {
     @Autowired
     ReviewDocumentRepository reviewDocumentRepository;
-
-    @DisplayName("given object to save"
-            + " when save object using MongoDB template"
-            + " then object is saved")
 
     @Before
     public void before() {
