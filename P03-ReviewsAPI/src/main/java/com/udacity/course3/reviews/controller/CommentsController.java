@@ -1,8 +1,7 @@
 package com.udacity.course3.reviews.controller;
 
 import com.udacity.course3.reviews.entity.Comment;
-import com.udacity.course3.reviews.repository.CommentRepository;
-import com.udacity.course3.reviews.repository.ReviewRepository;
+import com.udacity.course3.reviews.repository.ReviewDocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,7 @@ import java.util.List;
 public class CommentsController {
 
     @Autowired
-    ReviewRepository reviewRepository;
-
-    @Autowired
-    CommentRepository commentRepository;
+    ReviewDocumentRepository reviewDocumentRepository;
 
     /**
      * Creates a comment for a review.
@@ -38,10 +34,10 @@ public class CommentsController {
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST)
     @Transactional
     public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @Valid @RequestBody Comment comment) {
-        return reviewRepository.findById(reviewId)
+        return reviewDocumentRepository.findById(reviewId)
                 .map(review -> {
-                    comment.setReview(review);
-                    return new ResponseEntity<>(commentRepository.save(comment), HttpStatus.CREATED);
+                    review.getComments().add(comment.getDescription());
+                    return new ResponseEntity<>(reviewDocumentRepository.save(review), HttpStatus.CREATED);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Review not Found for: " + reviewId));
     }
@@ -56,11 +52,10 @@ public class CommentsController {
      * @param reviewId The id of the review.
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET)
-    public ResponseEntity<List<Comment>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
-        return reviewRepository.findById(reviewId)
+    public ResponseEntity<List<String>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+        return reviewDocumentRepository.findById(reviewId)
                 .map(review ->
-                        new ResponseEntity<>(commentRepository.findByReview(review)
-                                .orElseThrow(() -> new ResourceNotFoundException("Comment not Found for Review: " + reviewId)), HttpStatus.OK)
+                        new ResponseEntity<>(review.getComments(), HttpStatus.OK)
                 )
                 .orElseThrow(() -> new ResourceNotFoundException("Review not Found for: " + reviewId));
     }
