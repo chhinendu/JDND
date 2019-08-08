@@ -2,9 +2,7 @@ package com.udacity.course3.reviews.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,22 +11,28 @@ import java.util.List;
 public class ReviewDocument {
 
     @Id
-    private String reviewId;
+    private String id;
 
     @NotNull(message = "Please provide description")
     private String description;
 
     private Product product;
 
-    private List<String> comments;
+    private List<String> comments = new ArrayList<>();
+
+    @NotNull(message = "Please provide title")
+    private String title;
 
     public List<String> getComments() {
-        if (comments == null) {
-            return new ArrayList<>();
-        } else {
             return comments;
-        }
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setComments(List<String> comments) {
@@ -43,12 +47,12 @@ public class ReviewDocument {
         this.product = productId;
     }
 
-    public String getReviewId() {
-        return reviewId;
+    public String getId() {
+        return id;
     }
 
-    public void setReviewId(String reviewId) {
-        this.reviewId = reviewId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDescription() {

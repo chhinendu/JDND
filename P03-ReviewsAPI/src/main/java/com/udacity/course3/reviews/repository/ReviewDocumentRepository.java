@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface ReviewDocumentRepository extends MongoRepository<ReviewDocument, Integer> {
 
     Optional<List<ReviewDocument>> findByProduct(Product product);
+
+    Optional<ReviewDocument> findById(String id);
 }

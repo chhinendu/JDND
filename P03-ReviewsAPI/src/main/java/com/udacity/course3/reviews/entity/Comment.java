@@ -8,23 +8,35 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "COMMENT")
+@Table(name = "comment")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COMMENT_ID")
+    @Column(name = "comment_id")
     private int commentId;
 
     @NotNull(message = "Please provide description")
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
+    @NotNull(message = "Please provide title")
+    @Column(name = "title")
+    private String title;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "REVIEW_ID", nullable = false)
+    @JoinColumn(name = "review_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Review review;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Review getReview() {
         return review;

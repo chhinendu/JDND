@@ -9,34 +9,36 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Table(name = "REVIEW")
+@Table(name = "review")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "REVIEW_ID")
+    @Column(name = "review_id")
     private int reviewId;
 
     @NotNull(message = "Please provide description")
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
 
+    @NotNull(message = "Please provide title")
+    @Column(name = "title")
+    private String title;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "PRODUCT_ID", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Product product;
 
-    /*@OneToMany(mappedBy = "review", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<Comment> comments;
 
-    public Set<Comment> getComments() {
-        return comments;
+    public String getTitle() {
+        return title;
     }
 
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }*/
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Product getProduct() {
         return product;

@@ -6,6 +6,7 @@ import com.udacity.course3.reviews.entity.Review;
 import com.udacity.course3.reviews.repository.CommentRepository;
 import com.udacity.course3.reviews.repository.ProductRepository;
 import com.udacity.course3.reviews.repository.ReviewRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +42,39 @@ public class ReviewsApplicationTests {
     public void contextLoads() {
     }
 
+    @Before
+    public void before() {
+        productRepository.save(getProduct());
+        reviewRepository.save(getReview());
+        commentRepository.save(getComment());
+    }
+
+    private Product getProduct() {
+        Product product = new Product();
+        product.setProductId(1);
+        product.setProductName("Laptop");
+        product.setDescription("Description");
+        return product;
+    }
+
+    private Review getReview() {
+        Review review = new Review();
+        review.setReviewId(1);
+        review.setDescription("Review TEST");
+        review.setTitle("Review");
+        review.setProduct(getProduct());
+        return review;
+    }
+
+    private Comment getComment() {
+        Comment comment = new Comment();
+        comment.setCommentId(1);
+        comment.setDescription("Comment TEST");
+        comment.setTitle("Comment");
+        comment.setReview(getReview());
+        return comment;
+    }
+
     @Test
     public void injectedComponentsAreNotNull() {
         assertThat(dataSource).isNotNull();
@@ -54,10 +87,7 @@ public class ReviewsApplicationTests {
 
     @Test
     public void testCreateProduct(){
-        Product product = new Product();
-        product.setProductId(1);
-        product.setProductName("Laptop");
-        assertThat(productRepository.save(product)).isNotNull();
+        assertThat(productRepository.save(getProduct())).isNotNull();
     }
 
     @Test
@@ -68,14 +98,8 @@ public class ReviewsApplicationTests {
 
     @Test
     public void testCreateReview(){
-        Product product = new Product();
-        product.setProductId(1);
-        product.setProductName("TEST Product");
-        Review review = new Review();
-        review.setReviewId(1);
-        review.setDescription("Review TEST");
-        review.setProduct(product);
-        assertThat(reviewRepository.save(review)).isNotNull();
+
+        assertThat(reviewRepository.save(getReview())).isNotNull();
     }
 
     @Test
@@ -86,18 +110,8 @@ public class ReviewsApplicationTests {
 
     @Test
     public void testCreateComment(){
-        Product product = new Product();
-        product.setProductId(1);
-        product.setProductName("TEST Product");
-        Review review = new Review();
-        review.setDescription("Review TEST");
-        review.setReviewId(1);
-        review.setProduct(product);
-        Comment comment = new Comment();
-        comment.setCommentId(1);
-        comment.setDescription("Comment TEST");
-        comment.setReview(review);
-        assertThat(commentRepository.save(comment)).isNotNull();
+
+        assertThat(commentRepository.save(getComment())).isNotNull();
     }
 
     @Test

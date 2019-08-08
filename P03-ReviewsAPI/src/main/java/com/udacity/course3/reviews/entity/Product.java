@@ -6,27 +6,28 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "product_id")
     private int productId;
 
     @NotNull(message = "Please provide Product name")
-    @Column(name = "PRODUCT_NAME")
+    @Column(name = "product_name")
     private String productName;
 
-    /*@OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Review> reviews;
+    @NotNull(message = "Please provide Product description")
+    @Column(name = "description")
+    private String description;
 
-    public Set<Review> getReviews() {
-        return reviews;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }*/
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public int getProductId() {
         return productId;

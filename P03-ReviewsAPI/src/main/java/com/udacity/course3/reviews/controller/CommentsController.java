@@ -33,7 +33,7 @@ public class CommentsController {
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") Integer reviewId, @Valid @RequestBody Comment comment) {
+    public ResponseEntity<?> createCommentForReview(@PathVariable("reviewId") String reviewId, @Valid @RequestBody Comment comment) {
         return reviewDocumentRepository.findById(reviewId)
                 .map(review -> {
                     review.getComments().add(comment.getDescription());
@@ -52,7 +52,7 @@ public class CommentsController {
      * @param reviewId The id of the review.
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+    public ResponseEntity<List<String>> listCommentsForReview(@PathVariable("reviewId") String reviewId) {
         return reviewDocumentRepository.findById(reviewId)
                 .map(review ->
                         new ResponseEntity<>(review.getComments(), HttpStatus.OK)
