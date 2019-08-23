@@ -13,5 +13,5 @@ public interface ReviewDocumentRepository extends MongoRepository<ReviewDocument
 
     Optional<List<ReviewDocument>> findByProduct(Product product);
 
-    Optional<ReviewDocument> findById(String id);
+    Optional<ReviewDocument> findByReviewId(int id);
 }

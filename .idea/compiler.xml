@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="reviews" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="boogle-maps" target="8" />
+      <module name="chatroom-starter" target="1.8" />
+      <module name="eureka-server" target="8" />
+      <module name="pricing-service" target="8" />
+      <module name="reviews" target="1.8" />
+      <module name="vehicles-api" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="boogle-maps" options="-parameters" />
+      <module name="chatroom-starter" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="pricing-service" options="-parameters" />
+      <module name="reviews" options="-parameters" />
+      <module name="vehicles-api" options="-parameters" />
+    </option>
+  </component>
+</project>

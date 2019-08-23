@@ -13,18 +13,28 @@ public class ReviewDocument {
     @Id
     private String id;
 
+    private int reviewId;
+
     @NotNull(message = "Please provide description")
     private String description;
 
     private Product product;
 
-    private List<String> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
     @NotNull(message = "Please provide title")
     private String title;
 
-    public List<String> getComments() {
+    public List<Comment> getComments() {
             return comments;
+    }
+
+    public int getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(int reviewId) {
+        this.reviewId = reviewId;
     }
 
     public String getTitle() {
@@ -35,7 +45,7 @@ public class ReviewDocument {
         this.title = title;
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 

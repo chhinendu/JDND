@@ -23,26 +23,31 @@ public class ReviewsController {
     ReviewDocumentRepository reviewDocumentRepository;
 
     @Autowired
+    ReviewRepository reviewRepository;
+
+    @Autowired
     ProductRepository productRepository;
 
     /**
      * Creates a review for a product.
-     * <p>
-     * 1. Add argument for review entity. Use {@link RequestBody} annotation.
-     * 2. Check for existence of product.
-     * 3. If product not found, return NOT_FOUND.
-     * 4. If found, save review.
-     *
      * @param productId The id of the product.
+     * @param review Request body
      * @return The created review or 404 if product id is not found.
      */
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.POST)
-    public ResponseEntity<?> createReviewForProduct(@PathVariable("productId") Integer productId, @Valid @RequestBody ReviewDocument review) {
+    public ResponseEntity<?> createReviewForProduct(@PathVariable("productId") Integer productId, @Valid @RequestBody Review review) {
 
         return productRepository.findById(productId)
                 .map(product -> {
                     review.setProduct(product);
-                    return new ResponseEntity<>(reviewDocumentRepository.save(review), HttpStatus.CREATED);
+                    Review savedReview = reviewRepository.save(review);
+                    ReviewDocument reviewDocument = new ReviewDocument();
+                    reviewDocument.setReviewId(savedReview.getReviewId());
+                    reviewDocument.setTitle(review.getTitle());
+                    reviewDocument.setDescription(review.getDescription());
+                    reviewDocument.setProduct(review.getProduct());
+                    reviewDocumentRepository.save(reviewDocument);
+                    return new ResponseEntity<>(savedReview, HttpStatus.CREATED);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException("Product not Found for: " + productId));
     }

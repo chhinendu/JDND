@@ -1,30 +1,30 @@
-/* Create tables */
-CREATE TABLE PRODUCT
+/* create tables */
+create table product
 (
-    PRODUCT_ID   INT AUTO_INCREMENT,
-    PRODUCT_NAME VARCHAR(300) NOT NULL,
-    DESCRIPTION VARCHAR(500) NOT NULL,
-    CONSTRAINT ORDER_PK PRIMARY KEY (PRODUCT_ID)
+    product_id   int auto_increment,
+    product_name varchar(300) not null,
+    description varchar(500) not null,
+    constraint order_pk primary key (product_id)
 );
 
-CREATE TABLE REVIEW
+create table review
 (
-    REVIEW_ID   INT AUTO_INCREMENT,
-    DESCRIPTION VARCHAR(500) NOT NULL,
-    TITLE VARCHAR(200) NOT NULL,
-    PRODUCT_ID  INT          NOT NULL,
-    CONSTRAINT REVIEW_PK PRIMARY KEY (REVIEW_ID),
-    CONSTRAINT REVIEW_FK FOREIGN KEY (REVIEW_ID)
-        REFERENCES PRODUCT (PRODUCT_ID)
+    review_id   int auto_increment,
+    description varchar(500) not null,
+    title varchar(200) not null,
+    product_id  int          not null,
+    constraint review_pk primary key (review_id),
+    constraint review_fk foreign key (product_id)
+        references product (product_id)
 );
 
-CREATE TABLE COMMENT
+create table comment
 (
-    COMMENT_ID  INT AUTO_INCREMENT,
-    DESCRIPTION VARCHAR(1000) NOT NULL,
-    TITLE VARCHAR(200) NOT NULL,
-    REVIEW_ID   INT           NOT NULL,
-    CONSTRAINT COMMENT_PK PRIMARY KEY (COMMENT_ID),
-    CONSTRAINT COMMENT_FK FOREIGN KEY (COMMENT_ID)
-        REFERENCES REVIEW (REVIEW_ID)
+    comment_id  int auto_increment,
+    description varchar(1000) not null,
+    title varchar(200) not null,
+    review_id   int           not null,
+    constraint comment_pk primary key (comment_id),
+    constraint comment_fk foreign key (review_id)
+        references review (review_id)
 );
